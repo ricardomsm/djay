@@ -50,8 +50,8 @@ final class OnboardingPageViewController: UIPageViewController {
         view.addSubview(pageControl)
         NSLayoutConstraint.activate([
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            pageControl.heightAnchor.constraint(equalToConstant: 7)
+            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.pageControlBottomPadding),
+            pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight)
         ])
     }
 
@@ -76,8 +76,7 @@ final class OnboardingPageViewController: UIPageViewController {
     }
 
     private func setupGradient() {
-        let colors: [UIColor] = [#colorLiteral(red: 0.006337461527, green: 0.006436535623, blue: 0.009510123171, alpha: 1), #colorLiteral(red: 0.3874682784, green: 0.392734617, blue: 0.5259623528, alpha: 1)]
-        gradientLayer = CAGradientLayer.gradientLayer(colors: colors, in: view.frame)
+        gradientLayer = CAGradientLayer.gradientLayer(colors: Constants.gradientColors, in: view.frame)
         if let gradientLayer { view.layer.insertSublayer(gradientLayer, at: 0) }
     }
 
@@ -124,8 +123,13 @@ final class OnboardingPageViewController: UIPageViewController {
     }
 }
 
-// MARK: - UIPageViewControllerDataSource Delegate
-extension OnboardingPageViewController: UIPageViewControllerDataSource {
+private extension OnboardingPageViewController {
+    enum Constants {
+        static let pageControlBottomPadding: CGFloat = -16
+        static let pageControlHeight: CGFloat = 7
+        static let gradientColors: [UIColor] = [#colorLiteral(red: 0.006337461527, green: 0.006436535623, blue: 0.009510123171, alpha: 1), #colorLiteral(red: 0.3874682784, green: 0.392734617, blue: 0.5259623528, alpha: 1)]
+    }
+
     func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController

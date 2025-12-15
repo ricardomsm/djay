@@ -10,7 +10,7 @@ final class SkillLevelViewController: UIViewController {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 34, weight: .bold)
+        label.font = .systemFont(ofSize: Constants.titleFontSize, weight: .bold)
         label.text = "Welcome DJ"
         label.textColor = .white
         label.textAlignment = .center
@@ -20,9 +20,9 @@ final class SkillLevelViewController: UIViewController {
 
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 22, weight: .regular)
+        label.font = .systemFont(ofSize: Constants.subtitleFontSize, weight: .regular)
         label.text = "What's your DJ skill level?"
-        label.textColor = .white.withAlphaComponent(0.6)
+        label.textColor = .white.withAlphaComponent(Constants.subtitleAlpha)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -41,9 +41,9 @@ final class SkillLevelViewController: UIViewController {
     private lazy var contentStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [djEmojiView, titleLabel, subtitleLabel, skillLevelOptionsView])
         stack.axis = .vertical
-        stack.setCustomSpacing(40, after: djEmojiView)
-        stack.setCustomSpacing(8, after: titleLabel)
-        stack.setCustomSpacing(40, after: subtitleLabel)
+        stack.setCustomSpacing(Constants.emojiBottomSpacing, after: djEmojiView)
+        stack.setCustomSpacing(Constants.titleBottomSpacing, after: titleLabel)
+        stack.setCustomSpacing(Constants.subtitleBottomSpacing, after: subtitleLabel)
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -56,8 +56,8 @@ final class SkillLevelViewController: UIViewController {
 
         button.configuration?.background.backgroundColor = .systemBlue
         button.configuration?.contentInsets = Constants.letsGoButtonInsets
-        button.configuration?.attributedTitle?.font = .systemFont(ofSize: 17, weight: .semibold)
-        button.configuration?.background.cornerRadius = 12
+        button.configuration?.attributedTitle?.font = .systemFont(ofSize: Constants.buttonFontSize, weight: .semibold)
+        button.configuration?.background.cornerRadius = Constants.cornerRadius
         button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
 
@@ -69,7 +69,7 @@ final class SkillLevelViewController: UIViewController {
 
     private lazy var regularConstraints: [NSLayoutConstraint] = [
         regularLayoutGuide.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-        regularLayoutGuide.bottomAnchor.constraint(equalTo: letsGoButton.topAnchor, constant: -16),
+        regularLayoutGuide.bottomAnchor.constraint(equalTo: letsGoButton.topAnchor, constant: Constants.regularBottomPadding),
         regularLayoutGuide.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
         contentStackView.centerYAnchor.constraint(equalTo: regularLayoutGuide.centerYAnchor),
@@ -189,7 +189,7 @@ final class SkillLevelViewController: UIViewController {
         view.addLayoutGuide(compactLayoutGuide)
 
         NSLayoutConstraint.activate([
-            letsGoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -42)
+            letsGoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.buttonBottomPadding)
         ])
     }
 
@@ -202,6 +202,16 @@ final class SkillLevelViewController: UIViewController {
 // MARK: - Constants
 private extension SkillLevelViewController {
     enum Constants {
+        static let titleFontSize: CGFloat = 34
+        static let subtitleFontSize: CGFloat = 22
+        static let buttonFontSize: CGFloat = 17
+        static let subtitleAlpha: CGFloat = 0.6
+        static let emojiBottomSpacing: CGFloat = 40
+        static let titleBottomSpacing: CGFloat = 8
+        static let subtitleBottomSpacing: CGFloat = 40
+        static let cornerRadius: CGFloat = 12
+        static let regularBottomPadding: CGFloat = -16
+        static let buttonBottomPadding: CGFloat = -42
         static let letsGoButtonInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
         static let letsGoButtonCompactWidth: CGFloat = 240
         static let horizontalCompactPadding: CGFloat = 16

@@ -11,7 +11,7 @@ final class SkillLevelOptionsView: UIView {
 
         let stackView = UIStackView(arrangedSubviews: optionViews)
         stackView.axis = .vertical
-        stackView.spacing = 12
+        stackView.spacing = Constants.stackViewSpacing
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -25,6 +25,10 @@ final class SkillLevelOptionsView: UIView {
         self.options = options
         self.hasSelectedOption = hasSelectedOption
         setup()
+    }
+
+    private enum Constants {
+        static let stackViewSpacing: CGFloat = 12
     }
 
     override init(frame: CGRect) { super.init(frame: frame) }

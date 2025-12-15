@@ -4,7 +4,7 @@ import UIKit
 final class CongratsViewController: UIViewController {
     private lazy var congratsTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 26, weight: .bold)
+        label.font = .systemFont(ofSize: Constants.titleFontSize, weight: .bold)
         label.text = skillLevel.congratsTitle
         label.textColor = .white
         label.textAlignment = .center
@@ -16,9 +16,9 @@ final class CongratsViewController: UIViewController {
 
     private lazy var congratsMessageLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 22, weight: .regular)
+        label.font = .systemFont(ofSize: Constants.messageFontSize, weight: .regular)
         label.text = skillLevel.congratsMessage
-        label.textColor = .white.withAlphaComponent(0.6)
+        label.textColor = .white.withAlphaComponent(Constants.messageAlpha)
         label.textAlignment = .justified
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -29,7 +29,7 @@ final class CongratsViewController: UIViewController {
     private lazy var messageStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [congratsTitleLabel, gifImageView, congratsMessageLabel])
         stack.axis = .vertical
-        stack.spacing = 16
+        stack.spacing = Constants.stackViewSpacing
         stack.distribution = .fillEqually
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -38,7 +38,7 @@ final class CongratsViewController: UIViewController {
     private lazy var gifImageView: UIImageView = {
         do {
             let gif = try UIImage(gifName: skillLevel.gifAssetName)
-            let imageView = UIImageView(gifImage: gif, loopCount: 30)
+            let imageView = UIImageView(gifImage: gif, loopCount: Constants.gifLoopCount)
             imageView.contentMode = .scaleAspectFit
             imageView.alpha = 0
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,35 +57,35 @@ final class CongratsViewController: UIViewController {
 
         button.configuration?.background.backgroundColor = .systemBlue
         button.configuration?.contentInsets = Constants.doneButtonInsets
-        button.configuration?.attributedTitle?.font = .systemFont(ofSize: 17, weight: .semibold)
-        button.layer.cornerRadius = 12
+        button.configuration?.attributedTitle?.font = .systemFont(ofSize: Constants.buttonFontSize, weight: .semibold)
+        button.layer.cornerRadius = Constants.cornerRadius
         button.translatesAutoresizingMaskIntoConstraints = false
 
         return button
     }()
 
     private lazy var regularMessageConstraints: [NSLayoutConstraint] = [
-        messageStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-        messageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-        messageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-        messageStackView.bottomAnchor.constraint(lessThanOrEqualTo: doneButton.topAnchor, constant: -32),
+        messageStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.horizontalPadding),
+        messageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
+        messageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+        messageStackView.bottomAnchor.constraint(lessThanOrEqualTo: doneButton.topAnchor, constant: -Constants.horizontalPadding),
     ]
 
     private lazy var compactMessageConstraints: [NSLayoutConstraint] = [
         messageStackView.leadingAnchor.constraint(
             greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor,
-            constant: 32
+            constant: Constants.horizontalPadding
         ),
-        messageStackView.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -32),
+        messageStackView.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -Constants.horizontalPadding),
         messageStackView.centerYAnchor.constraint(equalTo: gifImageView.centerYAnchor),
-        messageStackView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16)
+        messageStackView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.topPadding)
     ]
 
     private lazy var compactGifConstraints: [NSLayoutConstraint] = [
-        gifImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-        gifImageView.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 32),
-        gifImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -32),
-        gifImageView.bottomAnchor.constraint(lessThanOrEqualTo: doneButton.topAnchor, constant: -42)
+        gifImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.topPadding),
+        gifImageView.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: Constants.horizontalPadding),
+        gifImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.horizontalPadding),
+        gifImageView.bottomAnchor.constraint(lessThanOrEqualTo: doneButton.topAnchor, constant: Constants.bottomPadding)
     ]
 
     private lazy var doneButtonRegularConstraints: [NSLayoutConstraint] = [
@@ -120,7 +120,7 @@ final class CongratsViewController: UIViewController {
         view.addSubview(doneButton)
 
         NSLayoutConstraint.activate([
-            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -42),
+            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.bottomPadding),
         ])
     }
 
@@ -168,13 +168,24 @@ final class CongratsViewController: UIViewController {
     }
 
     private func animateGifView() {
-        UIView.animate(withDuration: 1, delay: 0, options: .transitionCrossDissolve) { [weak self] in self?.gifImageView.alpha = 1 }
+        UIView.animate(withDuration: Constants.animationDuration, delay: 0, options: .transitionCrossDissolve) { [weak self] in self?.gifImageView.alpha = 1 }
     }
 }
 
 // MARK: - Constants
 private extension CongratsViewController {
     enum Constants {
+        static let titleFontSize: CGFloat = 26
+        static let messageFontSize: CGFloat = 22
+        static let buttonFontSize: CGFloat = 17
+        static let messageAlpha: CGFloat = 0.6
+        static let stackViewSpacing: CGFloat = 16
+        static let gifLoopCount = 30
+        static let cornerRadius: CGFloat = 12
+        static let horizontalPadding: CGFloat = 32
+        static let topPadding: CGFloat = 16
+        static let bottomPadding: CGFloat = -42
+        static let animationDuration: TimeInterval = 1
         static let doneButtonHorizontalSpacing: CGFloat = 32
         static let doneButtonBottomSpacing: CGFloat = 42
         static let doneButtonInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)

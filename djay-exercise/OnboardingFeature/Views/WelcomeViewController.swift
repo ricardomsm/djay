@@ -10,7 +10,7 @@ final class WelcomeViewController: UIViewController {
 
     private lazy var welcomeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 22, weight: .regular)
+        label.font = .systemFont(ofSize: Constants.welcomeFontSize, weight: .regular)
         label.text = "Welcome to djay!"
         label.textColor = .white
         label.textAlignment = .center
@@ -27,7 +27,7 @@ final class WelcomeViewController: UIViewController {
 
     private lazy var mixMusicLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 34, weight: .bold)
+        label.font = .systemFont(ofSize: Constants.titleFontSize, weight: .bold)
         label.text = "Mix Your Favorite Music"
         label.textColor = .white
         label.numberOfLines = 2
@@ -47,7 +47,7 @@ final class WelcomeViewController: UIViewController {
     private lazy var introStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [devicesImageView, mixMusicLabel, awardImageView])
         stack.axis = .vertical
-        stack.spacing = 32
+        stack.spacing = Constants.stackViewSpacing
         stack.distribution = .fillProportionally
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -61,8 +61,8 @@ final class WelcomeViewController: UIViewController {
 
         button.configuration?.background.backgroundColor = .systemBlue
         button.configuration?.contentInsets = Constants.continueButtonInsets
-        button.configuration?.attributedTitle?.font = .systemFont(ofSize: 17, weight: .semibold)
-        button.layer.cornerRadius = 12
+        button.configuration?.attributedTitle?.font = .systemFont(ofSize: Constants.buttonFontSize, weight: .semibold)
+        button.layer.cornerRadius = Constants.cornerRadius
         button.translatesAutoresizingMaskIntoConstraints = false
 
         return button
@@ -95,34 +95,34 @@ final class WelcomeViewController: UIViewController {
     private lazy var appLogoIntroConstraints: [NSLayoutConstraint] = [
         appLogoImageView.topAnchor.constraint(
             greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor,
-            constant: 16
+            constant: Constants.topPadding
         ),
         appLogoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        appLogoImageView.bottomAnchor.constraint(equalTo: introStackView.topAnchor, constant:  -37),
+        appLogoImageView.bottomAnchor.constraint(equalTo: introStackView.topAnchor, constant:  Constants.logoBottomPadding),
     ]
 
     private lazy var introStackViewConstraints: [NSLayoutConstraint] = [
         introStackView.leadingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-            constant: 32
+            constant: Constants.horizontalPadding
         ),
         introStackView.trailingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-            constant: -32
+            constant: -Constants.horizontalPadding
         ),
         introStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
     ]
 
     private lazy var welcomeLabelBottomConstraint = welcomeLabel.bottomAnchor.constraint(
         equalTo: continueButton.topAnchor,
-        constant: -24
+        constant: Constants.welcomeLabelBottomPadding
     )
 
     private lazy var welcomeLabelIntroConstraint = welcomeLabel.bottomAnchor.constraint(
         equalTo: continueButton.bottomAnchor
     )
 
-    private lazy var introStackViewHeightConstraint = introStackView.heightAnchor.constraint(equalToConstant: 0)
+    private lazy var introStackViewHeightConstraint = introStackView.heightAnchor.constraint(equalToConstant: Constants.introStackViewHeight)
 
     private var currentOnboardingStep = OnboardingSteps.Steps.welcome
     private let continueToIntro: () -> Void
@@ -188,7 +188,7 @@ final class WelcomeViewController: UIViewController {
             welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
             upperStackLayoutGuide.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            upperStackLayoutGuide.bottomAnchor.constraint(equalTo: welcomeLabel.topAnchor, constant: -16),
+            upperStackLayoutGuide.bottomAnchor.constraint(equalTo: welcomeLabel.topAnchor, constant: -Constants.topPadding),
             introStackViewHeightConstraint
         ]
 
@@ -213,7 +213,7 @@ final class WelcomeViewController: UIViewController {
 
     private func setupIntroView() {
         introStackView.isHidden = false
-        UIView.animate(withDuration: 0.5, delay: 0) { [weak self] in
+        UIView.animate(withDuration: Constants.animationDuration, delay: 0) { [weak self] in
             guard let self else { return }
             NSLayoutConstraint.deactivate(
                 [welcomeLabelBottomConstraint] + appLogoWelcomeConstraints + [introStackViewHeightConstraint]
@@ -228,6 +228,17 @@ final class WelcomeViewController: UIViewController {
 // MARK: - Constants
 private extension WelcomeViewController {
     enum Constants {
+        static let welcomeFontSize: CGFloat = 22
+        static let titleFontSize: CGFloat = 34
+        static let buttonFontSize: CGFloat = 17
+        static let stackViewSpacing: CGFloat = 32
+        static let cornerRadius: CGFloat = 12
+        static let topPadding: CGFloat = 16
+        static let logoBottomPadding: CGFloat = -37
+        static let horizontalPadding: CGFloat = 32
+        static let welcomeLabelBottomPadding: CGFloat = -24
+        static let introStackViewHeight: CGFloat = 0
+        static let animationDuration: TimeInterval = 0.5
         static let continueButtonHorizontalSpacing: CGFloat = 32
         static let continueButtonBottomSpacing: CGFloat = 42
         static let continueButtonInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)

@@ -4,7 +4,7 @@ final class OptionView<Id: Hashable>: UIControl {
     private lazy var circle: UIImageView = {
         let image = UIImage(systemName: "circle")
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .white.withAlphaComponent(0.25)
+        imageView.tintColor = .white.withAlphaComponent(Constants.circleAlpha)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -24,7 +24,7 @@ final class OptionView<Id: Hashable>: UIControl {
 
     private lazy var optionLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 17, weight: .regular)
+        label.font = .systemFont(ofSize: Constants.fontSize, weight: .regular)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,32 +56,43 @@ final class OptionView<Id: Hashable>: UIControl {
         option.map { hasSelectedOption?($0.id) }
     }
 
-    // MARK: - Private
     private func setup() {
         clipsToBounds = true
-        backgroundColor = .white.withAlphaComponent(0.1)
-        layer.cornerRadius = 12
+        backgroundColor = .white.withAlphaComponent(Constants.backgroundAlpha)
+        layer.cornerRadius = Constants.cornerRadius
         [circle, filledCircle, optionLabel].forEach(addSubview(_:))
         NSLayoutConstraint.activate([
-            circle.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            circle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
-            circle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
-            filledCircle.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            filledCircle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
-            filledCircle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
-            optionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            optionLabel.leadingAnchor.constraint(equalTo: circle.trailingAnchor, constant: 8),
-            optionLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -18),
-            optionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
+            circle.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
+            circle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.leadingPadding),
+            circle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.verticalPadding),
+            filledCircle.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
+            filledCircle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.leadingPadding),
+            filledCircle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.verticalPadding),
+            optionLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
+            optionLabel.leadingAnchor.constraint(equalTo: circle.trailingAnchor, constant: Constants.labelLeadingPadding),
+            optionLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.leadingPadding),
+            optionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.verticalPadding),
         ])
     }
 
     private func animateSelection() {
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut]) { [weak self] in
+        UIView.animate(withDuration: Constants.animationDuration, delay: 0, options: [.curveEaseInOut]) { [weak self] in
             guard let self else { return }
             layer.borderColor = isSelected ? UIColor.blue.cgColor : UIColor.clear.cgColor
             filledCircle.isHidden = !isSelected
             circle.isHidden = isSelected
         }
     }
+}
+
+// MARK: - Constants
+private enum Constants {
+    static let circleAlpha: CGFloat = 0.25
+    static let backgroundAlpha: CGFloat = 0.1
+    static let fontSize: CGFloat = 17
+    static let cornerRadius: CGFloat = 12
+    static let verticalPadding: CGFloat = 14
+    static let leadingPadding: CGFloat = 18
+    static let labelLeadingPadding: CGFloat = 8
+    static let animationDuration: TimeInterval = 0.5
 }

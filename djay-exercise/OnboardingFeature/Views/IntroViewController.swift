@@ -17,7 +17,7 @@ final class IntroViewController: UIViewController {
 
     private lazy var mixMusicLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 34, weight: .bold)
+        label.font = .systemFont(ofSize: Constants.titleFontSize, weight: .bold)
         label.text = "Mix Your Favorite Music"
         label.textColor = .white
         label.numberOfLines = 2
@@ -37,7 +37,7 @@ final class IntroViewController: UIViewController {
     private lazy var introStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [devicesImageView, mixMusicLabel, awardImageView])
         stack.axis = .vertical
-        stack.spacing = 32
+        stack.spacing = Constants.stackViewSpacing
         stack.distribution = .equalCentering
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -51,8 +51,8 @@ final class IntroViewController: UIViewController {
 
         button.configuration?.background.backgroundColor = .systemBlue
         button.configuration?.contentInsets = Constants.continueButtonInsets
-        button.configuration?.attributedTitle?.font = .systemFont(ofSize: 17, weight: .semibold)
-        button.configuration?.background.cornerRadius = 12
+        button.configuration?.attributedTitle?.font = .systemFont(ofSize: Constants.buttonFontSize, weight: .semibold)
+        button.configuration?.background.cornerRadius = Constants.cornerRadius
         button.translatesAutoresizingMaskIntoConstraints = false
 
         return button
@@ -60,14 +60,14 @@ final class IntroViewController: UIViewController {
 
     private lazy var continueButtonCompactConstraints: [NSLayoutConstraint] = [
         continueButton.widthAnchor.constraint(equalToConstant: Constants.continueButtonCompactWidth),
-        continueButton.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
-        continueButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32),
+        continueButton.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: Constants.horizontalPadding),
+        continueButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
         continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
     ]
 
     private lazy var continueButtonConstraints: [NSLayoutConstraint] = [
-        continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-        continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+        continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
+        continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
     ]
 
     private let continueAction: () -> Void
@@ -128,17 +128,17 @@ final class IntroViewController: UIViewController {
         NSLayoutConstraint.activate([
             appLogoImageView.topAnchor.constraint(
                 greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor,
-                constant: 16
+                constant: Constants.topPadding
             ),
             appLogoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            appLogoImageView.bottomAnchor.constraint(equalTo: introStackView.topAnchor, constant:  -37),
+            appLogoImageView.bottomAnchor.constraint(equalTo: introStackView.topAnchor, constant:  Constants.logoBottomPadding),
 
-            introStackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
-            introStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32),
+            introStackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: Constants.horizontalPadding),
+            introStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
             introStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             introStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
 
-            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -42)
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.buttonBottomPadding)
         ])
     }
 }
@@ -146,6 +146,14 @@ final class IntroViewController: UIViewController {
 // MARK: - Constants
 private extension IntroViewController {
     enum Constants {
+        static let titleFontSize: CGFloat = 34
+        static let buttonFontSize: CGFloat = 17
+        static let stackViewSpacing: CGFloat = 32
+        static let cornerRadius: CGFloat = 12
+        static let horizontalPadding: CGFloat = 32
+        static let topPadding: CGFloat = 16
+        static let logoBottomPadding: CGFloat = -37
+        static let buttonBottomPadding: CGFloat = -42
         static let continueButtonHorizontalSpacing: CGFloat = 32
         static let continueButtonInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
         static let continueButtonCompactWidth: CGFloat = 240
